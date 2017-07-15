@@ -52,7 +52,7 @@ byte NowpositionA = 6, NowpositionB = 6;
 byte statePress = 0;
 byte stateOKA = 0;
 byte stateOKB = 0;
-void checkPosit() {
+void checkPosit() {   //ฟังก์ชันในการเช็คว่าตัวดันแคลื่อนที่ไปอยู่ที่จุดไหน
   if (digitalRead(A1_limit) == 1) {
     NowpositionA = 1;
   } else if (digitalRead(A2_limit) == 1) {
@@ -83,7 +83,7 @@ void checkPosit() {
 }
 int lm = 0;
 byte nop = 0;
-void movePosit(byte posi1, byte posi2) {
+void movePosit(byte posi1, byte posi2) {   //ฟังก์ชันในการเคลื่อนที่ตามจุดที่กำหนดชุดหน้า
   checkPosit();
   checkPosit();
   checkPosit();
@@ -132,7 +132,7 @@ void movePosit(byte posi1, byte posi2) {
 
 }
 
-void movePosit2(byte posi1, byte posi2) {
+void movePosit2(byte posi1, byte posi2) {  //ฟังก์ชันในการเคลื่อนที่ตามจุดที่กำหนดชุดหลัง
   checkPosit();
   checkPosit();
   checkPosit();
@@ -171,7 +171,7 @@ void movePosit2(byte posi1, byte posi2) {
 
 }
 
-void initPosit() {
+void initPosit() {    //ฟังก์ชันการกำหนดจุดเริ่มต้น
   Serial.print("set zero");
   while (digitalRead(L_press1) == 1) {    ///หลัง
     digitalWrite(b_motor4, LOW);
@@ -208,7 +208,7 @@ void initPosit() {
   Serial.println("  done...");
 }
 
-void receiveEvent(int howMany) {
+void receiveEvent(int howMany) {  //ฟังก์ชันในการอ่านค่าจากตัวแม่
   byte data;
   if (Wire.available())
     data = Wire.read();    // receive byte as an integer
@@ -272,7 +272,7 @@ void receiveEvent(int howMany) {
   
 }
 
-void setup() {
+void setup() {    //ฟังก์ชันในการกำหนดค่าเริ่มต้นของไมโครกำหนดความสามารถของขาอุปกรณ์
   Serial.begin(9600);
   Wire.begin(8);
   Wire.onReceive(receiveEvent);
@@ -347,8 +347,8 @@ void setup() {
 unsigned long previousMillis = 0;
 
 void loop() {
-  checkPosit();
-  if (Serial.available() > 0) {
+  checkPosit();                 //เช็คตำแหน่งของตัวดัน
+  if (Serial.available() > 0) {  //ตัวดีบัคและทดสอบ
     char income = Serial.read();
     nop = 1;
     //    //Serial.write(income);
@@ -385,13 +385,13 @@ void loop() {
     }
 
   }
-  if (lm == 2) {
+  if (lm == 2) {  //เคลื่อนที่ไปยังจุดที่กำหนดตัวหน้า
   movePosit(positionA, positionB);
   }
-  if (lm == 3) {
+  if (lm == 3) {  //เคลื่อนที่ไปยังจุดที่กำหนดตัวหลัง
   movePosit2(positionA, positionB);
   }
-  if (lm == 1) {
+  if (lm == 1) {   // ดันมาม่าออกตัวหน้า
     if (stateOKA == 1) {
       digitalWrite(f_motor1, 0);   //ตัวดันหน้า A
       digitalWrite(b_motor1, 1);
@@ -402,18 +402,18 @@ void loop() {
       statePress = 1;
       delay(1000);
     }
-    if (stateOKB == 1) {
-      digitalWrite(f_motor4, 0);   //ตัวดันหน้า A
+    if (stateOKB == 1) {  //ดันมาม่าออกตัวหลัง
+      digitalWrite(f_motor4, 0);   //ตัวดันหลัง
       digitalWrite(b_motor4, 1);
       delay(9000);
-      digitalWrite(f_motor4, 1);   //ตัวดันหน้า A
+      digitalWrite(f_motor4, 1);   //ตัวดันหลัง
       digitalWrite(b_motor4, 1);
       stateOKB = 0;
       statePress = 2;
       delay(1000);
     }
 
-    if (statePress == 1) {
+    if (statePress == 1) { //ดัน กลับคืนจุดเริ่มต้นตัวหน้า
       Serial.println("state1");
       digitalWrite(b_motor1, 0);
       digitalWrite(f_motor1, 1);
@@ -426,7 +426,7 @@ void loop() {
         lm = 3;
       }
     }
-    if (statePress == 2) {
+    if (statePress == 2) {  //ดัน กลับคืนจุดเริ่มต้นตัวหลัง
       Serial.println("state2");
       digitalWrite(b_motor4, 0);
       digitalWrite(f_motor4, 1);
@@ -442,7 +442,7 @@ void loop() {
   }
   unsigned long currentMillis = millis();
 
-  if (currentMillis - previousMillis >= 1000) {
+  if (currentMillis - previousMillis >= 1000) {  //แสดงค่าดีบัค
     previousMillis = currentMillis;
     Serial.print(NowpositionA);
     Serial.print("  ");
