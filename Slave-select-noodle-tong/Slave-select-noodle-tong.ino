@@ -1,57 +1,68 @@
+/*************** Include Library ***************/
 #include <Wire.h>
 
 
-//  limit switch motor
+/*************** Initail variable ***************/
+// define pin
 // front
-#define A1_limit  22
-#define A2_limit  23
-#define A3_limit  24
-#define A4_limit  25
-#define A5_limit  26
-#define A6_limit  27
+#define A1_limit  22     //limit switch 1
+#define A2_limit  23     //limit switch 2
+#define A3_limit  24     //limit switch 3
+#define A4_limit  25     //limit switch 4
+#define A5_limit  26     //limit switch 5
+#define A6_limit  27     //limit switch 6
 // back
-#define D1_limit  40
-#define D2_limit  41
-#define D3_limit  42
-#define D4_limit  43
-#define D5_limit  44
-#define D6_limit  45
+#define D1_limit  40     //limit switch 1
+#define D2_limit  41     //limit switch 2
+#define D3_limit  42     //limit switch 3
+#define D4_limit  43     //limit switch 4
+#define D5_limit  44     //limit switch 5
+#define D6_limit  45     //limit switch 6
 
 //  limit switch noodle
 // front
-#define B1_limit  28
-#define B2_limit  29
-#define B3_limit  30
-#define B4_limit  31
-#define B5_limit  32
-#define B6_limit  33
+#define B1_limit  28     //limit switch 1
+#define B2_limit  29     //limit switch 2
+#define B3_limit  30     //limit switch 3
+#define B4_limit  31     //limit switch 4
+#define B5_limit  32     //limit switch 5
+#define B6_limit  33     //limit switch 6
 // back
-#define C1_limit  34
-#define C2_limit  35
-#define C3_limit  36
-#define C4_limit  37
-#define C5_limit  38
-#define C6_limit  39
+#define C1_limit  34     //limit switch 1
+#define C2_limit  35     //limit switch 2
+#define C3_limit  36     //limit switch 3
+#define C4_limit  37     //limit switch 4
+#define C5_limit  38     //limit switch 5
+#define C6_limit  39     //limit switch 6
 
 //  limit switch motor press  ย้อนกลับ
-#define L_press1  7
-#define L_press2  6
+#define L_press1  7      //limit switch หน้า
+#define L_press2  6      //limit switch หลัง
 
 // motor slide
-#define f_motor4  46      //
-#define b_motor4  47      //
-#define b_motor3  48      //
-#define f_motor3  49      //
-#define b_motor2  50      //
-#define f_motor2  51      //
-#define f_motor1  52      //
-#define b_motor1  53      //
+                          //    ________      //
+#define f_motor4  46      //---|         |____// มอเตอร์ดันมาม่าหลัง
+#define b_motor4  47      //---|_________|    //
+                          //    ________      //
+#define b_motor3  48      //---|         |____// มอเตอร์เลือกกมาม่าหลัง
+#define f_motor3  49      //---|_________|    //
+                          //    ________      //
+#define b_motor2  50      //---|         |____// มอเตอร์เลือกกมาม่าหน้า
+#define f_motor2  51      //---|_________|    //
+                          //    ________      //
+#define f_motor1  52      //---|         |____// มอเตอร์ดันมาม่าหน้า
+#define b_motor1  53      //---|_________|    //
 
-byte positionA = 1, positionB = 1;
-byte NowpositionA = 6, NowpositionB = 6;
-byte statePress = 0;
-byte stateOKA = 0;
-byte stateOKB = 0;
+//ใช้ในการเก็บสถานะระบบ
+//////////////////////////////////////////
+byte positionA = 1, positionB = 1;      //
+byte NowpositionA = 6, NowpositionB = 6;//
+byte statePress = 0;                    //
+byte stateOKA = 0;                      //
+byte stateOKB = 0;                      //
+//////////////////////////////////////////
+
+
 void checkPosit() {
   if (digitalRead(A1_limit) == 1) {
     NowpositionA = 1;
